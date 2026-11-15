@@ -12,7 +12,9 @@ const columns = [
   "分区规则",
   "文件格式",
   "压缩类型",
-  "数据校验"
+  "数据校验",
+  "可同步",
+  "阻断原因"
 ]
 const actions = [
   "提交校验",
@@ -132,7 +134,17 @@ export default function BronzeView() {
         <tbody>
           {rows.map((row) => (
             <tr key={String(row.id)}>
-              {columns.map((column) => <td key={column}>{row[column] ?? '—'}</td>)}
+              {columns.map((column) => (
+                <td key={column} className={column === '阻断原因' ? 'reason-cell' : undefined}>
+                  {column === '可同步' ? (
+                    <span className={row[column] === false ? 'badge badge-off' : 'badge badge-on'}>
+                      {row[column] === false ? '不可同步' : '可同步'}
+                    </span>
+                  ) : (
+                    (row[column] === '' || row[column] === undefined ? '—' : row[column])
+                  )}
+                </td>
+              ))}
               <td>{row.status}</td>
               <td className="row-actions">
                 {actions.map((action) => (
